@@ -17,8 +17,12 @@
 
             if (isset($_GET['p_id'])) {
                 $the_post_id = $_GET['p_id'];
-            }
+          
 
+                //Views setting
+                $view_query = "UPDATE posts SET post_views_count = post_views_count + 1 WHERE post_id = $the_post_id ";
+                $send_query = mysqli_query($connection, $view_query);
+                confirm($send_query);
 
 
             $query_post = "SELECT * FROM posts WHERE post_id = $the_post_id ";
@@ -48,10 +52,10 @@
 
                 <!-- First Blog Post -->
                 <h2>
-                    <a href="#"> <?php echo  $post_title ?></a>
+                    <a href="post.php?p_id=<?php echo  $the_post_id ?>"> <?php echo  $post_title ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="index.php"><?php echo   $post_author ?></a>
+                    by <a href="author_posts.php?author=<?php echo $post_author;?>&p_id=<?php echo $the_post_id;?>"><?php echo   $post_author ?></a>
                 </p>
 
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo   $post_author ?></p>
@@ -61,7 +65,13 @@
                 <p><?php echo   $post_content ?></p>
                 <hr>
             <?php
+            }}
+            else{
+                header("Location: index.php");
             }
+        
+        
+        
             ?>
 
 

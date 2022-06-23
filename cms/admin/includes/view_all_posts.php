@@ -7,17 +7,38 @@ if(isset($_POST['checkboxArray'])){
        $bulk_options =  $_POST['bulk_options'];
 
        switch($bulk_options){
-        case 'published';
+        case 'published':
             $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id = {$postValueId} ";
             $update_to_publish = mysqli_query($connection, $query);
         break;
-        case 'draft';
+        case 'draft':
             $query = "UPDATE posts SET post_status = '{$bulk_options}' WHERE post_id = {$postValueId} ";
             $update_to_draft = mysqli_query($connection, $query);
         break;
-        case 'delete';
+        case 'delete':
             $query = "DELETE FROM posts WHERE post_id = {$postValueId} ";
             $update_to_delete_status = mysqli_query($connection, $query);
+        break;
+        case 'clone':
+            $query = "SELECT * FROM posts WHERE post_id = {$postValueId} ";
+            $select_post_query = mysqli_query($connection, $query);
+
+            while ($row = mysqli_fetch_array($select_post_query)){
+                $post_title = $row['post_title'];
+                $post_author = $row['post_author'];
+                $post_catagory_id = $row['post_catagory_id'];
+                $post_status = $row['post_status'];
+                $post_image = $row['post_image'];
+                $post_tags = $row['post_tags'];
+                $post_content = $row['post_content'];
+                $post_date = $row['post_date'];
+            }
+            $query = "INSERT INTO posts(post_catagory_id, post_title, post_author, post_date, post_image, post_content, post_tags, post_status) ";
+            $query .= "VALUES({$post_catagory_id}, '{$post_title}', '{$post_author}', now(), '{$post_image}', '{$post_content}', '{$post_tags}', '{$post_status}')";
+
+            $copy_query = mysqli_query($connection, $query);
+            confirm($copy_query);
+
         break;
         
 
@@ -37,6 +58,7 @@ if(isset($_POST['checkboxArray'])){
             <option value="published">Publish</option>
             <option value="draft">Draft</option>
             <option value="delete">Delete</option>
+            <option value="clone">Clone</option>
         </select>
     </div>
     <br>
@@ -78,6 +100,7 @@ if(isset($_POST['checkboxArray'])){
                     $post_tags = $row['post_tags'];
                     $post_comment_count = $row['post_comment_count'];
                     $post_date = $row['post_date'];
+                    $post_views_count = $row['post_views_count'];
                 ?>
 
             <tr>
@@ -106,10 +129,10 @@ if(isset($_POST['checkboxArray'])){
                 <td><img width="100px" class="img-responsive" src="images/<?php echo $post_image ?>" alt=""></td>
                 <td><?php echo $post_tags ?></td>
                 <td><?php echo $post_comment_count ?></td>
-                <td><?php echo $post_date ?></td>
                 <td><a href='../post.php?p_id=<?php echo $post_id ?>'>View post</a></td>
                 <td><a href='posts.php?source=edit_post&p_id=<?php echo $post_id ?>'>Edit</a></td>
                 <td><a onClick="deleteConfirm()" href='posts.php?delete=<?php echo $post_id ?>'>DELETE</a></td>
+                <td><?php echo  $post_views_count ?></td>
             </tr>
 
         <?php

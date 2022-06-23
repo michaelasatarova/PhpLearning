@@ -2,6 +2,7 @@
 
 <!-- Navigation -->
 <?php include 'includes/navigation.php' ?>
+<?php include 'admin/functions.php' ?>
 
 <!-- Page Content -->
 <div class="container">
@@ -14,19 +15,19 @@
             <?php
             include 'includes/db.php';
 
-            if(isset($_GET['category'])){
-                $post_category_id = $_GET['category'];
+            if (isset($_GET['p_id'])) {
+                $the_post_id = $_GET['p_id'];
+                $the_post_author = $_GET['author'];
             }
 
-            $query_post = "SELECT * FROM posts WHERE post_catagory_id = $post_category_id ";
+
+
+            $query_post = "SELECT * FROM posts WHERE post_author = '{$the_post_author}' ";
+
             $posts = mysqli_query($connection, $query_post);
-
-            if (!$posts) {
-                die('Query Failed');
-            }
+            confirm($posts);
 
             while ($title = mysqli_fetch_assoc($posts)) {
-                $post_id =  $title['post_id'];
                 $post_title =  $title['post_title'];
                 $post_author =  $title['post_author'];
                 $post_date =  $title['post_date'];
@@ -48,10 +49,10 @@
 
                 <!-- First Blog Post -->
                 <h2>
-                    <a href="post.php?p_id=<?php echo  $post_id ?>"> <?php echo  $post_title ?></a>
+                    <a href="post.php?p_id=<?php echo  $the_post_id ?>"> <?php echo  $post_title ?></a>
                 </h2>
                 <p class="lead">
-                    by <a href="author_posts.php?author=<?php echo $post_author;?>&p_id=<?php echo $post_id;?>"><?php echo   $post_author ?></a>
+                    by <a href="author_posts.php?author=<?php echo $post_author;?>&p_id=<?php echo $the_post_id;?>"><?php echo $post_author; ?></a>
                 </p>
 
                 <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo   $post_author ?></p>
@@ -59,15 +60,10 @@
                 <img class="img-responsive" src="./admin/images/<?php echo   $post_image ?>" alt="">
                 <hr>
                 <p><?php echo   $post_content ?></p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-                
                 <hr>
             <?php
             }
             ?>
-
-
-
 
 
 
