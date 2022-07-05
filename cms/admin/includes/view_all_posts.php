@@ -128,11 +128,26 @@ if(isset($_POST['checkboxArray'])){
                 <td><?php echo $post_status ?></td>
                 <td><img width="100px" class="img-responsive" src="images/<?php echo $post_image ?>" alt=""></td>
                 <td><?php echo $post_tags ?></td>
-                <td><?php echo $post_comment_count ?></td>
+
+                <?php
+                    $query = "SELECT * FROM comments WHERE comment_post_id = $post_id";
+                    $send_comment_query = mysqli_query($connection, $query);
+                    $row = mysqli_fetch_array($send_comment_query);
+                    
+                    $comment_id =  0;
+                    if(!empty($row['comment_id']) ){
+                        $comment_id =  $row['comment_id'];
+                    }
+                    $count_comments = mysqli_num_rows( $send_comment_query);
+                
+                ?>
+
+                <td><a href="post_comments.php?id=<?php echo $post_id; ?>"> <?php echo $count_comments ?></a></td>
+
                 <td><a href='../post.php?p_id=<?php echo $post_id ?>'>View post</a></td>
                 <td><a href='posts.php?source=edit_post&p_id=<?php echo $post_id ?>'>Edit</a></td>
                 <td><a onClick="deleteConfirm()" href='posts.php?delete=<?php echo $post_id ?>'>DELETE</a></td>
-                <td><?php echo  $post_views_count ?></td>
+                <td><a href="posts.php?reset=<?php echo $post_id ?>"><?php echo  $post_views_count ?></a></td>
             </tr>
 
         <?php
@@ -146,11 +161,21 @@ if(isset($_POST['checkboxArray'])){
 
     <?php
 
+    //delete post with specific ID 
     if (isset($_GET['delete'])) {
         $the_post_id = $_GET['delete'];
 
         $query = "DELETE FROM posts WHERE post_id = {$the_post_id}";
         $delete_query = mysqli_query($connection, $query);
+    }
+
+    //reset view count
+    if (isset($_GET['reset'])) {
+        $the_post_id = $_GET['reset'];
+
+        $query = "UPDATE posts SET post_views_count = 0 WHERE post_id = $the_post_id";
+        $delete_query = mysqli_query($connection, $query);
+        header("Location: posts.php");
     }
 
     ?>

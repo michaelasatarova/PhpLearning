@@ -8,6 +8,8 @@
 </head>
 <body>
     <?php
+
+    phpinfo();
         $title= "Michaela ide ti";
 
         $numberList = array();

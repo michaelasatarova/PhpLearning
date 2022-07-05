@@ -81,14 +81,14 @@
 
             if (isset($_POST['create_comment'])) {
 
-                if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
+                //if (!empty($comment_author) && !empty($comment_email) && !empty($comment_content)) {
 
                     $the_post_id = $_GET['p_id'];
                     $comment_author = $_POST['comment_author'];
                     $comment_email = $_POST['comment_email'];
                     $comment_content = $_POST['comment_text'];
 
-                    $query = "INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unaproved', now() )";
+                    $query = "INSERT INTO comments(comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date) VALUES ($the_post_id, '{$comment_author}', '{$comment_email}', '{$comment_content}', 'unaproved', now() )";
                     $create_comment_query = mysqli_query($connection, $query);
                     confirm($create_comment_query);
 
@@ -97,11 +97,12 @@
 
                     $update_comment_count = mysqli_query($connection, $query_update_comment_count);
                     confirm($update_comment_count);
-                }
-                else{
-                    echo "<script>alert('Fields can´t be empty')</script>";
-                }
+                //}
+                // else{
+                //     echo "<script>alert('Fields can´t be empty')</script>";
+                // }
             }
+
             ?>
 
             <!-- Comments Form -->

@@ -28,3 +28,4 @@ $(document).ready(function() {
   function deleteConfirm(){
     return confirm("Are you sure you want to delete?");
 }
+

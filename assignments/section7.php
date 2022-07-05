@@ -2,10 +2,9 @@
 
 //CREATE CONNECTION
     $connection = mysqli_connect('localhost', 'root', '', 'section7');
-    if($connection){
-        // die("Not connected");
-        echo "Connected";
-    }
+    // if($connection){
+    //     echo "Connected";
+    // }
 
 //GET POST SOMETHING 
     if(isset($_POST['submit'])){
