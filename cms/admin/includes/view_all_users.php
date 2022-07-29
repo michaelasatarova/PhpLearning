@@ -1,4 +1,3 @@
-
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
@@ -42,7 +41,7 @@
             <td><a href='users.php?change_to_subscriber=<?php echo $user_id ?>'>Change to SUBSCRIBER</a></td>
             <td><a href='users.php?source=edit_user&edit_user=<?php echo $user_id ?>'>EDIT</a></td>
             <td><a href='users.php?delete=<?php echo $user_id ?>'>DELETE</a></td>
-            
+
         </tr>
 
     <?php
@@ -56,31 +55,34 @@
 <?php
 
 // CHANGE TO ADMIN
-if(isset($_GET['change_to_admin'])){
+if (isset($_GET['change_to_admin'])) {
     $the_user_id = $_GET['change_to_admin'];
-     $query = "UPDATE users SET user_role = 'Admin' WHERE user_id = $the_user_id ";
-     $change_to_admin_query = mysqli_query($connection, $query);
-     header("Location: users.php");
-     
- }
+    $query = "UPDATE users SET user_role = 'Admin' WHERE user_id = $the_user_id ";
+    $change_to_admin_query = mysqli_query($connection, $query);
+    header("Location: users.php");
+}
 
 //CHANGE TO SUBSCRIBER
-if(isset($_GET['change_to_subscriber'])){
+if (isset($_GET['change_to_subscriber'])) {
     $the_user_id = $_GET['change_to_subscriber'];
-     $query = "UPDATE users SET user_role = 'Subscriber' WHERE user_id = $the_user_id";
-     $change_to_subscriber_query = mysqli_query($connection, $query);
-     header("Location: users.php");
-     
- }
+    $query = "UPDATE users SET user_role = 'Subscriber' WHERE user_id = $the_user_id";
+    $change_to_subscriber_query = mysqli_query($connection, $query);
+    header("Location: users.php");
+}
 
 // DELETE USER
-if(isset($_GET['delete'])){
-   $the_user_id = $_GET['delete'];
+if (isset($_GET['delete'])) {
 
-    $query = "DELETE FROM users WHERE user_id = {$the_user_id}";
-    $delete_query = mysqli_query($connection, $query);
-    header("Location: users.php");
-    
+    if (isset($_SESSION['user_role'])) {
+        if ($_SESSION['user_role'] == 'Admin') {
+
+            $the_user_id =mysqli_real_escape_string($connection, $_GET['delete']);
+
+            $query = "DELETE FROM users WHERE user_id = {$the_user_id}";
+            $delete_query = mysqli_query($connection, $query);
+            header("Location: users.php");
+        }
+    }
 }
 
 ?>

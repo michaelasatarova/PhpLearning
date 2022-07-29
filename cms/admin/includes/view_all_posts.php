@@ -1,5 +1,7 @@
 <?php
 
+include 'delete_modal.php';
+
 if(isset($_POST['checkboxArray'])){
     echo 'Receiving data';
 
@@ -93,6 +95,7 @@ if(isset($_POST['checkboxArray'])){
                 while ($row = mysqli_fetch_assoc($select_posts)) {
                     $post_id = $row['post_id'];
                     $post_author = $row['post_author'];
+                    $post_user = $row['post_user'];
                     $post_title = $row['post_title'];
                     $post_cathegory_id = $row['post_catagory_id'];
                     $post_status = $row['post_status'];
@@ -106,7 +109,8 @@ if(isset($_POST['checkboxArray'])){
             <tr>
                 <td><input class="checkBoxes" type="checkbox" name="checkboxArray[]" value="<?php echo $post_id; ?>"></td>
                 <td><?php echo $post_id ?></td>
-                <td><?php echo $post_author ?></td>
+                <td><?php echo $post_user ?></td>
+
                 <td><?php echo $post_title ?></td>
                 <td>
                     <?php echo $post_cathegory_id ?>
@@ -146,7 +150,8 @@ if(isset($_POST['checkboxArray'])){
 
                 <td><a href='../post.php?p_id=<?php echo $post_id ?>'>View post</a></td>
                 <td><a href='posts.php?source=edit_post&p_id=<?php echo $post_id ?>'>Edit</a></td>
-                <td><a onClick="deleteConfirm()" href='posts.php?delete=<?php echo $post_id ?>'>DELETE</a></td>
+                <td><a rel='<?php echo $post_id ?>' href='javascript:void(0)' class="delete_link">DELETE</a></td>
+             <!--   <td><a onClick="deleteConfirm()" href='posts.php?delete=<?php echo $post_id ?>'>DELETE</a></td> --->
                 <td><a href="posts.php?reset=<?php echo $post_id ?>"><?php echo  $post_views_count ?></a></td>
             </tr>
 
@@ -181,3 +186,23 @@ if(isset($_POST['checkboxArray'])){
     ?>
 
 </form>
+
+<script>
+
+$(document).ready(function(){
+
+    $(".delete_link").on('click', function(){
+
+        let id = $(this).attr("rel");
+        let delete_url ="posts.php?delete="+ id +" ";
+
+        $(".modal-delete-link").attr("href", delete_url);
+        $("#myModal").modal("show");
+        
+        
+    })
+    
+
+});
+
+</script>

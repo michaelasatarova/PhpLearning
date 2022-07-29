@@ -2,6 +2,18 @@
 
     <!-- LOGIN -->
     <div class="well">
+
+    <?php 
+
+        if(isset($_SESSION['username'])){
+            $username = $_SESSION['username'];
+            echo "<h4>Login as  {$username} </h4>";
+
+            echo '<a href="includes/logout.php" class="btn btn-primary">LOGOUT</a>';
+        }
+        else{  
+    ?>
+
         <h4>Login</h4>
         <form action="includes/login.php" method="post">
             <div class="form-group">
@@ -15,6 +27,8 @@
             </div>
         </form>
         <!-- /.input-group -->
+        <?php } ?>
+
     </div>
 
     <!-- Blog Search Well -->

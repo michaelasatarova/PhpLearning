@@ -8,7 +8,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="./index.php">CMS FRONT</a>
+                <a class="navbar-brand" href="./index">CMS FRONT</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -26,16 +26,43 @@
 
                 while($row = mysqli_fetch_row($select_all_categories_query)) {
                     $cat_title = $row[1];
+
+                    $category_class = '';
+                    $registration_class ='';
+
+                    $pageName = basename($_SERVER['PHP_SELF']);
+                    $registration = 'registration.php';
+
+                    if(isset($_GET['category']) && $_GET['category'] == $cat_id){
+                        $category_class = 'active';
+                    }
+                    else if( $pageName == $registration ){
+                        $registration_class ='active';
+                    }
                  ?>  
-                    <li>
+                    <li class="<?php  echo $category_class; ?>">
                         <a href="#"><?php  echo $cat_title; ?></a>
                     </li>
                     <?php  } ?>
+
+                    <?php if(isLoggedIn()): ?>
                     <li>
                         <a href="admin">ADMIN</a>
                     </li>
                     <li>
-                        <a href="registration.php">REGISTRATION</a>
+                        <a href="includes/logout.php">Log out</a>
+                    </li>
+                    <?php else: ?>
+                        <li>
+                            <a href="login">LOGIN</a>
+                        </li>
+                        
+                         <li  class="<?php  echo  $registration_class; ?>">
+                            <a href="registration">REGISTRATION</a>
+                        </li>
+                    <?php endif; ?>
+                    <li>
+                        <a href="contact">CONTACT</a>
                     </li>
                     <?php
 

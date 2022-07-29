@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteRule ^(index|contact|registration|login)$ $1.php [NC,L]  
+
